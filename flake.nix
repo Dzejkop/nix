@@ -31,6 +31,12 @@
       overlays.default = final: _prev: {
         maki = final.callPackage ./packages/maki.nix { };
         iroh-doctor = final.callPackage ./packages/iroh-doctor.nix { };
+        opencode = final.callPackage ./packages/opencode.nix { };
+        opencode-desktop = final.callPackage ./packages/opencode-desktop.nix { };
+        pi-coding-agent = final.callPackage ./packages/pi-coding-agent.nix { };
+        deepseek-harness = final.callPackage ./packages/deepseek-harness.nix { };
+        # Not available on x86_64-darwin; see meta.platforms.
+        prime-agent = final.callPackage ./packages/prime-agent.nix { };
       };
 
       packages = forAllSystems (
@@ -39,7 +45,17 @@
           pkgs = (pkgsFor system).extend self.overlays.default;
         in
         {
-          inherit (pkgs) maki iroh-doctor;
+          inherit (pkgs)
+            maki
+            iroh-doctor
+            opencode
+            opencode-desktop
+            pi-coding-agent
+            deepseek-harness
+            ;
+        }
+        // nixpkgs.lib.optionalAttrs (system != "x86_64-darwin") {
+          inherit (pkgs) prime-agent;
         }
       );
 
