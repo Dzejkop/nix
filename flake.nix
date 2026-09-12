@@ -34,9 +34,6 @@
         opencode = final.callPackage ./packages/opencode.nix { };
         opencode-desktop = final.callPackage ./packages/opencode-desktop.nix { };
         pi-coding-agent = final.callPackage ./packages/pi-coding-agent.nix { };
-        deepseek-harness = final.callPackage ./packages/deepseek-harness.nix { };
-        # Not available on x86_64-darwin; see meta.platforms.
-        prime-agent = final.callPackage ./packages/prime-agent.nix { };
       };
 
       packages = forAllSystems (
@@ -51,11 +48,7 @@
             opencode
             opencode-desktop
             pi-coding-agent
-            deepseek-harness
             ;
-        }
-        // nixpkgs.lib.optionalAttrs (system != "x86_64-darwin") {
-          inherit (pkgs) prime-agent;
         }
       );
 
